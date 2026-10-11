@@ -1,0 +1,38 @@
+# Publishes the website in dist-web/ to GitHub Pages on every push to main. The site is built
+# locally (`npm run build:web`) and committed; the source isn't in this repository.
+# One-time setup: repository Settings → Pages → Source: GitHub Actions.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never cancel a deploy halfway; queue the next one instead.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist-web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

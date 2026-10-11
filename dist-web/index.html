@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="A calm, keyboard-friendly numberlink puzzle game. Connect matching numbers, fill every cell. Every puzzle has exactly one solution." />
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <title>Numberlink</title>
+    <!-- The saved theme, before the first paint (an inline script isn't allowed by the policy above). -->
+    <script src="./boot.js"></script>
+    <!--
+      Paint the background, and a loading screen, before the stylesheet and the app arrive: the logo,
+      its line drawing from dot to dot. It plays at least once through, then fades into the app
+      (src/lib/boot.ts).
+    -->
+    <style>
+      html { background: oklch(1 0 0); }
+      html.dark { background: oklch(0.145 0 0); }
+      .boot { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: oklch(1 0 0); animation: boot-in 0.2s ease-out both; transition: opacity 0.35s ease-out; }
+      html.dark .boot { background: oklch(0.145 0 0); }
+      .boot.out { opacity: 0; pointer-events: none; }
+      .boot svg { width: 64px; height: 64px; }
+      /* the logo's animation, here and wherever the app waits (components/loading.tsx) */
+      .mark { overflow: visible; }
+      .mark path { stroke-dasharray: 1; animation: boot-draw 1.6s ease-in-out infinite; }
+      .mark .end { transform-box: fill-box; transform-origin: center; animation: boot-join 1.6s ease-in-out infinite; }
+      @keyframes boot-in { from { opacity: 0; } }
+      @keyframes boot-draw { 0% { stroke-dashoffset: 1; } 55%, 100% { stroke-dashoffset: 0; } }
+      @keyframes boot-join { 0%, 50% { transform: scale(1); } 62% { transform: scale(1.18); } 75%, 100% { transform: scale(1); } }
+      @media (prefers-reduced-motion: reduce) {
+        .mark path, .mark .end { animation: none; }
+      }
+      /* the phone apps: the launch screen showed the finished logo, so keep it finished */
+      html.native .mark path, html.native .mark .end { animation: none; }
+    </style>
+    <script type="module" crossorigin src="./assets/index-B_VxoBdS.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DQ3ueD2r.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Over the app until it's ready, and then a little longer (src/lib/boot.ts). -->
+    <div id="boot" class="boot" role="img" aria-label="Loading Numberlink">
+      <svg class="mark" viewBox="270 290 480 440" fill="oklch(0.62 0.15 255)">
+        <path d="M373 630 V333 H500 A150 150 0 0 1 650 483 V630" pathLength="1" fill="none" stroke="oklch(0.62 0.15 255)" stroke-width="77" stroke-linejoin="round" />
+        <circle cx="373" cy="630" r="97" />
+        <circle class="end" cx="650" cy="630" r="97" />
+      </svg>
+    </div>
+  </body>
+</html>

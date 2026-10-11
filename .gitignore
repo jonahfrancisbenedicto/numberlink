@@ -1,0 +1,21 @@
+# Only the public face of the project is tracked: the README and its images, the licence, and the
+# built website. The source stays on this machine, untracked.
+/*
+!/.gitignore
+!/README.md
+!/LICENSE
+
+!/.github/
+
+!/build/
+/build/*
+!/build/icon.png
+
+!/docs/
+/docs/*
+!/docs/media/
+
+# the website, built with `npm run build:web`; the Pages workflow publishes it as is
+!/dist-web/
+
+.DS_Store
